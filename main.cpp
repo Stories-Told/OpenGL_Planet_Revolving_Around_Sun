@@ -156,6 +156,7 @@ void display(GLFWwindow* window, double currentTime)
 	mvLoc = glGetUniformLocation(renderingProgram, "mv_matrix");
 
 	// Connect to the proj_matrix in the vertex shader
+	// pMat is initalized in init() to save on performance
 	glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(pMat));
 
 	// Push view matrix onto the stack
@@ -168,7 +169,6 @@ void display(GLFWwindow* window, double currentTime)
 	mvStack.push(mvStack.top());
 	mvStack.top() *= glm::rotate(glm::mat4(1.0f), (float)currentTime, glm::vec3(1.0f, 0.0f, 0.0f)); // Sun rotation
 
-	// Copy perspective, camera, and cube to corresponding uniform variables
 	glUniformMatrix4fv(mvLoc, 1, GL_FALSE, glm::value_ptr(mvStack.top()));
 
 	// Enables the VBO containing the cube
@@ -190,7 +190,6 @@ void display(GLFWwindow* window, double currentTime)
 	mvStack.push(mvStack.top());
 	mvStack.top() *= glm::rotate(glm::mat4(1.0f), (float)currentTime, glm::vec3(0.0, 1.0, 0.0));
 
-	// Copy perspective, camera, and cube to corresponding uniform variables
 	glUniformMatrix4fv(mvLoc, 1, GL_FALSE, glm::value_ptr(mvStack.top()));
 
 	// Enables the VBO containing the cube
